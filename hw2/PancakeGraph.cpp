@@ -26,7 +26,7 @@ bool PancakeGraph::checkGoalNode(PancakeNode *currNode) {
     }
 }
 
-void PancakeGraph::expandNode(PancakeNode *expandingNode) {
+void PancakeGraph::expandNode(PancakeNode *expandingNode, char algo) {
     
     PancakeNode *twoFlip = new PancakeNode(expandingNode->id, expandingNode->gCost);
     PancakeNode *threeFlip = new PancakeNode(expandingNode->id, expandingNode->gCost);
@@ -44,12 +44,38 @@ void PancakeGraph::expandNode(PancakeNode *expandingNode) {
     expandingNode->middleChild = threeFlip;
     expandingNode->rightChild = fourFlip;
     
-    if (closedSet.find(twoFlip->id) == closedSet.end())
-        pqucs.push(twoFlip);
-    if (closedSet.find(threeFlip->id) == closedSet.end())
-        pqucs.push(threeFlip);
-    if (closedSet.find(fourFlip->id) == closedSet.end())
-        pqucs.push(fourFlip);
+    PancakeNode *children [3];
+    children[0] = twoFlip;
+    children[1] = threeFlip;
+    children[2] = fourFlip;
+    
+    for (int i = 0; i < 3; i++) {
+        if (closedSet.find(children[i]->id) == closedSet.end()) {
+            if (algo == 'u'){
+                pqucs.push(children[i]);
+            } else if (algo == 'g') {
+                pqgreedy.push(children[i]);
+            } else if (algo == 'a') {
+                pqaStar.push(children[i]);
+            }
+        }
+
+    }
+    
+//    if (closedSet.find(twoFlip->id) == closedSet.end()) {
+//        if (algo == 'u'){
+//            pqucs.push(twoFlip);
+//        } else if (algo == 'g') {
+//            pqgreedy.push(twoFlip);
+//        } else if (algo == 'a') {
+//            pqaStar.push(twoFlip);
+//        }
+//    }
+    
+//    if (closedSet.find(threeFlip->id) == closedSet.end())
+//        pqucs.push(threeFlip);
+//    if (closedSet.find(fourFlip->id) == closedSet.end())
+//        pqucs.push(fourFlip);
     
 }
 
@@ -88,7 +114,7 @@ bool PancakeGraph::ucs() {
         } else {
             pqucs.pop();
             closedSet.insert(nodeToCheck.id);
-            expandNode(&nodeToCheck);
+            expandNode(&nodeToCheck, 'u');
         }
     }
     return false;
@@ -107,7 +133,7 @@ bool PancakeGraph::greedy() {
         } else {
             pqgreedy.pop();
             closedSet.insert(nodeToCheck.id);
-            expandNode(&nodeToCheck);
+            expandNode(&nodeToCheck, 'g');
         }
     }
     return false;
@@ -126,7 +152,7 @@ bool PancakeGraph::aStar() {
         } else {
             pqaStar.pop();
             closedSet.insert(nodeToCheck.id);
-            expandNode(&nodeToCheck);
+            expandNode(&nodeToCheck, 'a');
         }
     }
     return false;

@@ -70,7 +70,7 @@ public:
     PancakeNode *root;
     // used to expend the input node by the three flipping options
     bool checkGoalNode(PancakeNode *currNode);
-    void expandNode(PancakeNode *expendingNode);
+    void expandNode(PancakeNode *expendingNode, char algo);
     void printPath(PancakeNode *goalNode);
     
     bool dfs();

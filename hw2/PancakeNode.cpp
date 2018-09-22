@@ -14,7 +14,7 @@ using namespace std;
 PancakeNode::PancakeNode(int id) {
     this->id = id;
     this->gCost = 0;
-    this->hCost = this->getLargestPancakeId();
+    this->hCost = this->getLargestPancakeIdOutOfPlace();
     this->flipFrom = "";
     this->parent = NULL;
     this->leftChild = NULL;
@@ -25,7 +25,7 @@ PancakeNode::PancakeNode(int id) {
 PancakeNode::PancakeNode(int id, int gCost) {
     this->id = id;
     this->gCost = gCost;
-    this->hCost = this->getLargestPancakeId();
+    this->hCost = this->getLargestPancakeIdOutOfPlace();
     this->flipFrom = "";
     this->parent = NULL;
     this->leftChild = NULL;
@@ -58,24 +58,24 @@ void PancakeNode::flip(int flips) {
         this->flipFrom = originalId.insert(0, "|");
         this->gCost += 4;
     }
-    this->hCost = this->getLargestPancakeId();
+    this->hCost = this->getLargestPancakeIdOutOfPlace();
 }
 
 // function used to get the largest pancake id that's still out of place to set the heuristic cost of a certain pancake node
-int PancakeNode::getLargestPancakeId() {
-    // http://www.cplusplus.com/forum/beginner/36015/
-    int maxId = 0;
-    int remainder = 0;
-    int idCopy = this->id;
-    // gradual 10 division algorithm
-    while (idCopy > 0) {
-        remainder = idCopy % 10;
-        if (remainder > maxId) {
-            maxId = remainder;
-        }
-        idCopy /= 10;
+int PancakeNode::getLargestPancakeIdOutOfPlace() {
+    
+    string idCopy = to_string(this->id);
+    
+    if (idCopy[0] != '4') {
+        return 4;
+    } else if (idCopy[1] != '3') {
+        return 3;
+    } else if (idCopy[2] != '2') {
+        return 2;
+    } else {
+        return 0;
     }
-    return maxId;
+
 }
 
 int PancakeNode::getId() {
@@ -92,7 +92,7 @@ int PancakeNode::getGCost() {
 
 void PancakeNode::setHCost() {
     // the heuristic cost of this pancakes node is the largest ID of the cake that's still out of the place per the instruction
-    this->hCost = this->getLargestPancakeId();
+    this->hCost = this->getLargestPancakeIdOutOfPlace();
 }
 
 int PancakeNode::getHCost() {
