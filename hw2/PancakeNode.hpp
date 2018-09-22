@@ -28,6 +28,7 @@ class PancakeNode {
     
 public:
     PancakeNode(int id);    // constructor with initializing the id
+    PancakeNode(int id, int gCost);     // constructor used to clone parent node and filp the pancakes to become a child node
     void flip(int flips);    // function used to flip the pancakes
     int getLargestPancakeId();  //function used to get the largest pancake id that's still out of place to set the heuristic cost of a certain pancake node
     

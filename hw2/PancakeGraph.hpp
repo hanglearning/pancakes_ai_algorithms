@@ -14,41 +14,9 @@
 #include <unordered_set>
 #include <queue>
 #include <vector>
+#include <stack>
 
 using namespace std;
-
-class PancakeGraph {
-    
-    // closed set to store expanded nodes to avoid expanding them again
-    // https://www.geeksforgeeks.org/unorderd_set-stl-uses/
-    unordered_set<int> closedSet;
-    
-    priority_queue<PancakeNode, vector<PancakeNode>, cmpGCost> pqdfs;
-    priority_queue<PancakeNode, vector<PancakeNode>, cmpGCost> pqucs;
-    priority_queue<PancakeNode, vector<PancakeNode>, cmpHCost> pqgreedy;
-    priority_queue<PancakeNode, vector<PancakeNode>, cmpGandHCost> pqastar;
-    
-    
-    
-public:
-    PancakeGraph(PancakeNode *rootNode);
-    PancakeNode *root;
-    // used to expend the input node by the three flipping options
-    bool checkGoalNode(PancakeNode *currNode);
-    void expandNode(PancakeNode *expendingNode);
-    void printPath(PancakeNode *goalNode);
-    
-    bool dfs();
-    bool ucs();
-    bool greedy();
-    bool aStar();
-    
-    
-};
-
-// https://www.youtube.com/watch?v=iJ-NSxH3QNc
-// https://www.geeksforgeeks.org/binary-heap/
-// https://stackoverflow.com/questions/16111337/declaring-a-priority-queue-in-c-with-a-custom-comparator
 
 // comparator function used with the priority queue to get the node having the least culmulative cost from the fringe
 class cmpGCost {
@@ -82,5 +50,40 @@ public:
         return a->getId() < b->getId();
     }
 };
+
+class PancakeGraph {
+    
+    // closed set to store expanded nodes to avoid expanding them again
+    // https://www.geeksforgeeks.org/unorderd_set-stl-uses/
+    unordered_set<int> closedSet;
+    stack <PancakeNode*> printingStack;
+    
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGCost> pqdfs;
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGCost> pqucs;
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpHCost> pqgreedy;
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGandHCost> pqaStar;
+    
+    
+    
+public:
+    PancakeGraph(PancakeNode *rootNode);
+    PancakeNode *root;
+    // used to expend the input node by the three flipping options
+    bool checkGoalNode(PancakeNode *currNode);
+    void expandNode(PancakeNode *expendingNode);
+    void printPath(PancakeNode *goalNode);
+    
+    bool dfs();
+    bool ucs();
+    bool greedy();
+    bool aStar();
+    
+    
+};
+
+// https://www.youtube.com/watch?v=iJ-NSxH3QNc
+// https://www.geeksforgeeks.org/binary-heap/
+// https://stackoverflow.com/questions/16111337/declaring-a-priority-queue-in-c-with-a-custom-comparator
+
 
 #endif /* PancakeGraph_hpp */

@@ -8,6 +8,8 @@
 
 #include "PancakeGraph.hpp"
 #include "PancakeNode.hpp"
+#include <iostream>
+#include <unordered_set>
 using namespace std;
 
 const int GOALSTATE = 4321;
@@ -26,9 +28,9 @@ bool PancakeGraph::checkGoalNode(PancakeNode *currNode) {
 
 void PancakeGraph::expandNode(PancakeNode *expandingNode) {
     
-    PancakeNode *twoFlip = expandingNode;
-    PancakeNode *threeFlip = expandingNode;
-    PancakeNode *fourFlip = expandingNode;
+    PancakeNode *twoFlip = new PancakeNode(expandingNode->id, expandingNode->gCost);
+    PancakeNode *threeFlip = new PancakeNode(expandingNode->id, expandingNode->gCost);
+    PancakeNode *fourFlip = new PancakeNode(expandingNode->id, expandingNode->gCost);
     
     twoFlip->flip(2);
     threeFlip->flip(3);
@@ -42,34 +44,89 @@ void PancakeGraph::expandNode(PancakeNode *expandingNode) {
     expandingNode->middleChild = threeFlip;
     expandingNode->rightChild = fourFlip;
     
-    if (closedSet.find(twoFlip) == stringSet.end())
+    if (closedSet.find(twoFlip->id) == closedSet.end())
         pqucs.push(twoFlip);
-    if (closedSet.find(threeFlip) == stringSet.end())
+    if (closedSet.find(threeFlip->id) == closedSet.end())
         pqucs.push(threeFlip);
-    if (closedSet.find(fourFlip) == stringSet.end())
+    if (closedSet.find(fourFlip->id) == closedSet.end())
         pqucs.push(fourFlip);
     
 }
 
 void PancakeGraph::printPath(PancakeNode *goalNode) {
-    while (goalNode->parent != NULL) {
-        cout << "print test" << endl;
+    PancakeNode *tmp = goalNode;
+    while (tmp->parent != NULL) {
+        this->printingStack.push(tmp);
+        tmp = tmp->parent;
     }
+    printingStack.push(tmp);
+    
+    while (printingStack.size() != 1) {
+        PancakeNode firstNode = *printingStack.top();
+        printingStack.pop();
+        PancakeNode secondNode = *printingStack.top();
+        cout << secondNode.flipFrom << " g=" << firstNode.gCost << ", h=" << firstNode.hCost << endl;
+    }
+    PancakeNode lastNode = *printingStack.top();
+    cout << lastNode.id << " g=" << lastNode.gCost << ", h=" << lastNode.hCost << endl;
+}
+
+bool PancakeGraph::dfs() {
+    return false;
 }
 
 bool PancakeGraph::ucs() {
     // Initial state
     // Push the root node to the fringe
     pqucs.push(root);
-    while (pqucs.size !=0) {
-        PancakeNode *nodeToCheck = pducs.top();
-        bool isGoal = checkGoalNode(nodeToCheck);
+    while (pqucs.size() !=0) {
+        PancakeNode &nodeToCheck = *pqucs.top();
+        bool isGoal = checkGoalNode(&nodeToCheck);
         if (isGoal == true) {
-            printPath(nodeToCheck);
+            printPath(&nodeToCheck);
+            return true;
         } else {
-            pducs.pop();
-            closedSet.insert(nodeToCheck);
-            expandNode(nodeToCheck);
+            pqucs.pop();
+            closedSet.insert(nodeToCheck.id);
+            expandNode(&nodeToCheck);
+        }
+    }
+    return false;
+}
+
+bool PancakeGraph::greedy() {
+    // Initial state
+    // Push the root node to the fringe
+    pqgreedy.push(root);
+    while (pqgreedy.size() !=0) {
+        PancakeNode &nodeToCheck = *pqgreedy.top();
+        bool isGoal = checkGoalNode(&nodeToCheck);
+        if (isGoal == true) {
+            printPath(&nodeToCheck);
+            return true;
+        } else {
+            pqgreedy.pop();
+            closedSet.insert(nodeToCheck.id);
+            expandNode(&nodeToCheck);
+        }
+    }
+    return false;
+}
+
+bool PancakeGraph::aStar() {
+    // Initial state
+    // Push the root node to the fringe
+    pqaStar.push(root);
+    while (pqaStar.size() !=0) {
+        PancakeNode &nodeToCheck = *pqaStar.top();
+        bool isGoal = checkGoalNode(&nodeToCheck);
+        if (isGoal == true) {
+            printPath(&nodeToCheck);
+            return true;
+        } else {
+            pqaStar.pop();
+            closedSet.insert(nodeToCheck.id);
+            expandNode(&nodeToCheck);
         }
     }
     return false;

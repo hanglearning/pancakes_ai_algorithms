@@ -14,7 +14,18 @@ using namespace std;
 PancakeNode::PancakeNode(int id) {
     this->id = id;
     this->gCost = 0;
-    this->hCost = 0;
+    this->hCost = this->getLargestPancakeId();
+    this->flipFrom = "";
+    this->parent = NULL;
+    this->leftChild = NULL;
+    this->middleChild = NULL;
+    this->rightChild = NULL;
+}
+
+PancakeNode::PancakeNode(int id, int gCost) {
+    this->id = id;
+    this->gCost = gCost;
+    this->hCost = this->getLargestPancakeId();
     this->flipFrom = "";
     this->parent = NULL;
     this->leftChild = NULL;
@@ -40,11 +51,11 @@ void PancakeNode::flip(int flips) {
         this->gCost += 2;
     } else if (flips == 3) {
         this->id = bottomPancakeId * 1000 + firstPancakeId * 100 + secondPancakeId * 10 + thirdPancakeId;
-        this->flipFrom = originalId.insert(3, "|");
+        this->flipFrom = originalId.insert(1, "|");
         this->gCost += 3;
     } else if (flips == 4) {
         this->id = firstPancakeId * 1000 + secondPancakeId * 100 + thirdPancakeId * 10 + bottomPancakeId;
-        this->flipFrom = originalId.append("|");
+        this->flipFrom = originalId.insert(0, "|");
         this->gCost += 4;
     }
     this->hCost = this->getLargestPancakeId();
