@@ -13,7 +13,6 @@
 #include <string>
 
 using namespace std;
-const int MAXCHILDREN = 3;
 
 class PancakeNode {
     
@@ -22,7 +21,10 @@ class PancakeNode {
     int hCost;      // the heuristic value of the current node to the goal
     string flipFrom; // used to record the previous flipping state to this state, e.g. 4321 is from 43|12
     PancakeNode *parent;    // parent node of the current pancakeNode
-    PancakeNode *children[MAXCHILDREN];     // 3 flipping options make 3 chidren nodes for the current pancakeNode
+    PancakeNode *leftChild; // by default I would make this fipping by 2 from its parent node
+    PancakeNode *middleChild; // fipping by 3
+    PancakeNode *rightChild; // fipping by 4
+    friend class PancakeGraph;
     
 public:
     PancakeNode(int id);    // constructor with initializing the id
@@ -31,7 +33,7 @@ public:
     
     // getters and setters
     int getId();
-    void setGCost(int gCostArc);   // the gCostArc parimeter is the arc cost from its parent node to itself
+//    void setGCost(int gCostArc);   // the gCostArc parimeter is the arc cost from its parent node to itself
     int getGCost();
     void setHCost();
     int getHCost();

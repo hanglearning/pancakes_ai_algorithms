@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		77DE4304215486F20024D5F1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77DE4303215486F20024D5F1 /* main.cpp */; };
+		77DE430C215497630024D5F1 /* PancakeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77DE430A215497630024D5F1 /* PancakeNode.cpp */; };
+		77DE430F2155D5300024D5F1 /* PancakeGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77DE430D2155D5300024D5F1 /* PancakeGraph.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		77DE4300215486F20024D5F1 /* hw2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hw2; sourceTree = BUILT_PRODUCTS_DIR; };
 		77DE4303215486F20024D5F1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		77DE430A215497630024D5F1 /* PancakeNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PancakeNode.cpp; sourceTree = "<group>"; };
+		77DE430B215497630024D5F1 /* PancakeNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PancakeNode.hpp; sourceTree = "<group>"; };
+		77DE430D2155D5300024D5F1 /* PancakeGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PancakeGraph.cpp; sourceTree = "<group>"; };
+		77DE430E2155D5300024D5F1 /* PancakeGraph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PancakeGraph.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +63,11 @@
 		77DE4302215486F20024D5F1 /* hw2 */ = {
 			isa = PBXGroup;
 			children = (
+				77DE430A215497630024D5F1 /* PancakeNode.cpp */,
+				77DE430B215497630024D5F1 /* PancakeNode.hpp */,
 				77DE4303215486F20024D5F1 /* main.cpp */,
+				77DE430D2155D5300024D5F1 /* PancakeGraph.cpp */,
+				77DE430E2155D5300024D5F1 /* PancakeGraph.hpp */,
 			);
 			path = hw2;
 			sourceTree = "<group>";
@@ -119,6 +129,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				77DE4304215486F20024D5F1 /* main.cpp in Sources */,
+				77DE430C215497630024D5F1 /* PancakeNode.cpp in Sources */,
+				77DE430F2155D5300024D5F1 /* PancakeGraph.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
