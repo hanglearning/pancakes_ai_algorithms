@@ -14,24 +14,6 @@ using namespace std;
 
 const int GOALSTATE = 4321;
 
-// iterate over a priority queue
-//// https://stackoverflow.com/questions/4484767/how-to-iterate-over-a-priority-queue
-//template <class T, class S, class C>
-//S& Container(priority_queue<T, S, C>& q) {
-//    struct HackedQueue : private priority_queue<T, S, C> {
-//        static S& Container(priority_queue<T, S, C>& q) {
-//            return q.*&HackedQueue::c;
-//        }
-//    };
-//    return HackedQueue::Container(q);
-//}
-
-// https://stackoverflow.com/questions/41904374/priority-queues-in-c
-struct MyPriorityQueue: std::priority_queue<int> {
-    auto begin() const { return c.begin(); }
-    auto end() const { return c.end(); }
-};
-
 PancakeGraph::PancakeGraph(PancakeNode *rootNode){
     root = rootNode;
 }
@@ -124,12 +106,6 @@ bool PancakeGraph::ucs() {
     // Push the root node to the fringe
     pqucs.push(root);
     while (pqucs.size() !=0) {
-        
-        for(auto &v: pqucs) {
-            std::cout << v << std::endl;
-        }
-        
-        
         PancakeNode &nodeToCheck = *pqucs.top();
         bool isGoal = checkGoalNode(&nodeToCheck);
         if (isGoal == true) {
