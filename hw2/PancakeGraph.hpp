@@ -18,7 +18,10 @@
 
 using namespace std;
 
-// comparator function used with the priority queue to get the node having the least culmulative cost from the fringe
+// following four functions define four comparators for the priority queues used with the algorithm
+
+// comparator function used with the priority queue to get the node having the least culmulative cost from the fringe.
+// used in UCS
 class cmpGCost {
 public:
     bool operator()(PancakeNode *a, PancakeNode *b) {
@@ -27,6 +30,7 @@ public:
 };
 
 // comparator function to get the node having the least heuristic cost from the fringe
+// used in Greedy
 class cmpHCost {
 public:
     bool operator()(PancakeNode *a, PancakeNode *b) {
@@ -35,6 +39,7 @@ public:
 };
 
 // comparator function to get the node having the least sum of the culmulative cost and the heuristic cost from the fringe
+// used in A*
 class cmpGandHCost {
 public:
     bool operator()(PancakeNode *a, PancakeNode *b) {
@@ -44,6 +49,7 @@ public:
 
 
 // comparator function used with the priority queue to get the node having the largest id number from the fringe
+// used in DFS, and a helper queue for all other 3 algorithms
 class cmpID {
 public:
     bool operator()(PancakeNode *a, PancakeNode *b) {
@@ -54,26 +60,47 @@ public:
 class PancakeGraph {
     
     // closed set to store expanded nodes to avoid expanding them again
-    // https://www.geeksforgeeks.org/unorderd_set-stl-uses/
     unordered_set<int> closedSet;
+    
+    // used for printing the output
+    // see printPath() for details
     stack <PancakeNode*> printingStack;
     
+    // prioritt queues used in four algorithms respectively
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpID> pqdfs;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGCost> pqucs;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpHCost> pqgreedy;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGandHCost> pqaStar;
+    
+    // helper queue to always store the node with the highest id number to determine tie
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpID> pqid;
     
     
     
 public:
+    
+    // constructor
     PancakeGraph(PancakeNode *rootNode);
+    
+    // root node of the graph
     PancakeNode *root;
-    // used to expend the input node by the three flipping options
+    
+    // check if the node is the goal node
     bool checkGoalNode(PancakeNode *currNode);
+    
+    // used to expend the input node by the three flipping options
+    // the expendingNode is the parent node to be expanded, and
+    // the char algo is used to determine which fringe the children
+    // nodes are to put in. see the actual function for details
     void expandNode(PancakeNode *expendingNode, char algo);
+    
+    // used to print the output
+    // see the actual function for details
     void printPath(PancakeNode *goalNode);
     
+    // four searching algorithms
+    // return true if path is found,
+    // otherwise false
     bool dfs();
     bool ucs();
     bool greedy();
@@ -81,10 +108,5 @@ public:
     
     
 };
-
-// https://www.youtube.com/watch?v=iJ-NSxH3QNc
-// https://www.geeksforgeeks.org/binary-heap/
-// https://stackoverflow.com/questions/16111337/declaring-a-priority-queue-in-c-with-a-custom-comparator
-
 
 #endif /* PancakeGraph_hpp */

@@ -10,11 +10,11 @@
 
 using namespace std;
 
-
+// constructor 1, only to assign the packages order id of this node
 PancakeNode::PancakeNode(int id) {
     this->id = id;
     this->gCost = 0;
-    this->hCost = this->getLargestPancakeIdOutOfPlace();
+    this->hCost = this->getLargestPancakeIdOutOfPlace();    // used to calculate this node's heuristic cost
     this->flipFrom = "";
     this->parent = NULL;
     this->leftChild = NULL;
@@ -22,6 +22,7 @@ PancakeNode::PancakeNode(int id) {
     this->rightChild = NULL;
 }
 
+// used to clone PancakeNode to form child nodes
 PancakeNode::PancakeNode(int id, int gCost) {
     this->id = id;
     this->gCost = gCost;
@@ -35,6 +36,8 @@ PancakeNode::PancakeNode(int id, int gCost) {
 
 // function used to flip the pancakes and return the resulted pancakes. The parimeter flips is the number of pancakes that are to be fliped. e.g. for id = 3421, if flips = 2, the function returns 3421
 void PancakeNode::flip(int flips) {
+    
+    // get each pancake id among the pile
     string originalId = to_string(this->id);
     int firstPancakeId = this->id % 10;
     this->id /= 10;
@@ -45,6 +48,7 @@ void PancakeNode::flip(int flips) {
     int bottomPancakeId = this->id % 10;
     this->id /= 10;
     
+    // flip the numbers, add cost and record the action
     if (flips == 2) {
         this->id = bottomPancakeId * 1000 + thirdPancakeId * 100 + firstPancakeId * 10 + secondPancakeId;
         this->flipFrom = originalId.insert(2, "|");
@@ -58,6 +62,8 @@ void PancakeNode::flip(int flips) {
         this->flipFrom = originalId.insert(0, "|");
         this->gCost += 4;
     }
+    
+    // immediately update the heuristic cost after flipping, used getLargestPancakeIdOutOfPlace() written below
     this->hCost = this->getLargestPancakeIdOutOfPlace();
 }
 
@@ -78,13 +84,12 @@ int PancakeNode::getLargestPancakeIdOutOfPlace() {
 
 }
 
+// getters and setters
+
 int PancakeNode::getId() {
     return this->id;
 }
 
-//void PancakeNode::setGCost(int gCostArc) {
-//    this->gCost = gCostArc + this->parent->gCost;
-//};
 
 int PancakeNode::getGCost() {
     return this->gCost;

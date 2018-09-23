@@ -15,6 +15,11 @@
 
 using namespace std;
 
+/* the main function will record the user input and extract the starting
+ pancake order and the algorithm the user wishes to choose, then perfom
+ the corresponding searching algorithm on the pancakes to find the path
+ to the goal state - pancakes order 4321 */
+
 int main() {
     
     // taking user input for pancake order and the algorithm
@@ -36,20 +41,28 @@ int main() {
         algo = userInput[4];
     }
     
+    // Initialize the pancakes root node and initialize the graph
     PancakeNode *pancakeRoot = new PancakeNode(pancakeOrderID);
     PancakeGraph *pancakeGraph = new PancakeGraph(pancakeRoot);
     
-    // UCS
+    /* perform algorithm based on user's chioice -
+     see the PancakeGraph class for the details
+     of the implementation of each algorithm */
+    
     switch (algo) {
+        // dfs
         case 'd':
             pancakeGraph->dfs();
             break;
+        // ucs
         case 'u':
             pancakeGraph->ucs();
             break;
+        // greedy
         case 'g':
             pancakeGraph->greedy();
             break;
+        // a*
         case 'a':
             pancakeGraph->aStar();
             break;
