@@ -53,10 +53,13 @@ void PancakeGraph::expandNode(PancakeNode *expandingNode, char algo) {
         if (closedSet.find(children[i]->id) == closedSet.end()) {
             if (algo == 'u'){
                 pqucs.push(children[i]);
+                pqid.push(children[i]);
             } else if (algo == 'g') {
                 pqgreedy.push(children[i]);
+                pqid.push(children[i]);
             } else if (algo == 'a') {
                 pqaStar.push(children[i]);
+                pqid.push(children[i]);
             }
         }
 
@@ -105,20 +108,121 @@ bool PancakeGraph::ucs() {
     // Initial state
     // Push the root node to the fringe
     pqucs.push(root);
+    pqid.push(root);
+    stack <PancakeNode*> tmpStack;
+    bool tie = false;
+    int tmpStackSize;
+    
     while (pqucs.size() !=0) {
-        PancakeNode &nodeToCheck = *pqucs.top();
-        bool isGoal = checkGoalNode(&nodeToCheck);
-        if (isGoal == true) {
-            printPath(&nodeToCheck);
-            return true;
-        } else {
-            pqucs.pop();
-            closedSet.insert(nodeToCheck.id);
-            expandNode(&nodeToCheck, 'u');
+        // check for tie
+        PancakeNode *firstFriengeNode = pqucs.top();
+        pqucs.pop();
+        PancakeNode *secondFriengeNode = pqucs.top();
+        if (firstFriengeNode->getGCost() == secondFriengeNode->getGCost()){
+            tie = true;
         }
+        pqucs.push(firstFriengeNode);
+        
+        if(tie == false) {
+            PancakeNode &nodeToCheck = *pqucs.top();
+            bool isGoal = checkGoalNode(&nodeToCheck);
+            if (isGoal == true) {
+                printPath(&nodeToCheck);
+                return true;
+            } else {
+                pqucs.pop();
+                while (pqid.top()->getId() != nodeToCheck.getId()){
+                    tmpStack.push(pqid.top());
+                    pqid.pop();
+                }
+                pqid.pop();
+                tmpStackSize = tmpStack.size();
+                for (int i = 0; i < tmpStackSize; i++){
+                    pqid.push(tmpStack.top());
+                    tmpStack.pop();
+                }
+                closedSet.insert(nodeToCheck.id);
+                expandNode(&nodeToCheck, 'u');
+            }
+            
+        } else {
+            if (pqucs.top()->getGCost() == pqid.top()->getGCost()) {
+                while (pqucs.top()->getId() != pqid.top()->getId()) {
+                    tmpStack.push(pqucs.top());
+                    pqucs.pop();
+                }
+                PancakeNode &nodeToCheck = *pqucs.top();
+                bool isGoal = checkGoalNode(&nodeToCheck);
+                if (isGoal == true) {
+                    printPath(&nodeToCheck);
+                    return true;
+                } else {
+                    pqid.pop();
+                    pqucs.pop();
+                    closedSet.insert(nodeToCheck.id);
+                    expandNode(&nodeToCheck, 'u');
+                    tmpStackSize = tmpStack.size();
+                    for (int i = 0; i < tmpStackSize; i++) {
+                        pqucs.push(tmpStack.top());
+                        tmpStack.pop();
+                    }
+                }
+            } else {
+                while (pqucs.top()->getGCost() != pqid.top()->getGCost()) {
+                    tmpStack.push(pqid.top());
+                    pqid.pop();
+                }
+                PancakeNode &nodeToCheck = *pqid.top();
+                bool isGoal = checkGoalNode(&nodeToCheck);
+                if (isGoal == true) {
+                    printPath(&nodeToCheck);
+                    return true;
+                } else {
+                    pqid.pop();
+                    closedSet.insert(nodeToCheck.id);
+                    expandNode(&nodeToCheck, 'u');
+                    tmpStackSize = tmpStack.size();
+                    for (int i = 0; i < tmpStackSize; i++) {
+                        pqid.push(tmpStack.top());
+                        tmpStack.pop();
+                    }
+                    while (pqucs.top()->getId() != nodeToCheck.getId()){
+                        tmpStack.push(pqucs.top());
+                        pqucs.pop();
+                    }
+                    pqucs.pop();
+                    tmpStackSize = tmpStack.size();
+                    for (int i = 0; i < tmpStackSize; i++) {
+                        pqucs.push(tmpStack.top());
+                        tmpStack.pop();
+                    }
+                }
+            }
+        }
+        
+        
     }
     return false;
 }
+
+//bool PancakeGraph::ucs() {
+//    // Initial state
+//    // Push the root node to the fringe
+//    pqucs.push(root);
+//    while (pqucs.size() !=0) {
+//        PancakeNode &nodeToCheck = *pqucs.top();
+//        bool isGoal = checkGoalNode(&nodeToCheck);
+//        if (isGoal == true) {
+//            printPath(&nodeToCheck);
+//            return true;
+//        } else {
+//            pqucs.pop();
+//            closedSet.insert(nodeToCheck.id);
+//            expandNode(&nodeToCheck, 'u');
+//        }
+//    }
+//    return false;
+//}
 
 bool PancakeGraph::greedy() {
     // Initial state

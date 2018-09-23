@@ -58,10 +58,11 @@ class PancakeGraph {
     unordered_set<int> closedSet;
     stack <PancakeNode*> printingStack;
     
-    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGCost> pqdfs;
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpID> pqdfs;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGCost> pqucs;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpHCost> pqgreedy;
     priority_queue<PancakeNode*, vector<PancakeNode*>, cmpGandHCost> pqaStar;
+    priority_queue<PancakeNode*, vector<PancakeNode*>, cmpID> pqid;
     
     
     
