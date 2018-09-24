@@ -296,7 +296,7 @@ bool PancakeGraph::greedy() {
             PancakeNode *firstFriengeNode = pqgreedy.top();
             pqgreedy.pop();
             PancakeNode *secondFriengeNode = pqgreedy.top();
-            if (firstFriengeNode->getGCost() == secondFriengeNode->getGCost()){
+            if (firstFriengeNode->getHCost() == secondFriengeNode->getHCost()){
                 tie = true;
             }
             pqgreedy.push(firstFriengeNode);
@@ -324,7 +324,7 @@ bool PancakeGraph::greedy() {
             }
             
         } else {
-            if (pqgreedy.top()->getGCost() == pqid.top()->getGCost()) {
+            if (pqgreedy.top()->getHCost() == pqid.top()->getHCost()) {
                 while (pqgreedy.top()->getId() != pqid.top()->getId()) {
                     tmpStack.push(pqgreedy.top());
                     pqgreedy.pop();
@@ -346,7 +346,7 @@ bool PancakeGraph::greedy() {
                     }
                 }
             } else {
-                while (pqgreedy.top()->getGCost() != pqid.top()->getGCost()) {
+                while (pqgreedy.top()->getHCost() != pqid.top()->getHCost()) {
                     tmpStack.push(pqid.top());
                     pqid.pop();
                 }
@@ -404,7 +404,7 @@ bool PancakeGraph::aStar() {
             PancakeNode *firstFriengeNode = pqaStar.top();
             pqaStar.pop();
             PancakeNode *secondFriengeNode = pqaStar.top();
-            if (firstFriengeNode->getGCost() == secondFriengeNode->getGCost()){
+            if (firstFriengeNode->getFCost() == secondFriengeNode->getFCost()){
                 tie = true;
             }
             pqaStar.push(firstFriengeNode);
@@ -433,7 +433,7 @@ bool PancakeGraph::aStar() {
             }
             
         } else {
-            if (pqaStar.top()->getGCost() == pqid.top()->getGCost()) {
+            if (pqaStar.top()->getFCost() == pqid.top()->getFCost()) {
                 while (pqaStar.top()->getId() != pqid.top()->getId()) {
                     tmpStack.push(pqaStar.top());
                     pqaStar.pop();
@@ -455,7 +455,7 @@ bool PancakeGraph::aStar() {
                     }
                 }
             } else {
-                while (pqaStar.top()->getGCost() != pqid.top()->getGCost()) {
+                while (pqaStar.top()->getFCost() != pqid.top()->getFCost()) {
                     tmpStack.push(pqid.top());
                     pqid.pop();
                 }

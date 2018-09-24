@@ -38,6 +38,9 @@ public:
     void setHCost();
     int getHCost();
     
+    // f cost is the sum of g and h cost used in a star search
+    int getFCost();
+    
 };
 
 #endif /* PancakeNode_hpp */

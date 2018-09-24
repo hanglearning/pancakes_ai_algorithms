@@ -103,3 +103,7 @@ void PancakeNode::setHCost() {
 int PancakeNode::getHCost() {
     return this->hCost;
 }
+
+int PancakeNode::getFCost() {
+    return this->hCost + this->gCost;
+}
